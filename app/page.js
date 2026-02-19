@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -9,6 +10,9 @@ export default function Home() {
   const sendOTP = async () => {
     await fetch("/api/send-otp", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({ phone })
     });
 
@@ -31,4 +35,4 @@ export default function Home() {
       </button>
     </div>
   );
-    }
+}
