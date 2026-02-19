@@ -3,33 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function OTPPage({ searchParams }) {
+export default function OTPPage() {
   const [otp, setOtp] = useState("");
   const router = useRouter();
 
-  const phone = searchParams?.phone || "";
-
-  const verify = async () => {
-    const res = await fetch("/api/verify-otp", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ phone, otp }),
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
+  const verifyOTP = async () => {
+    try {
+      await window.confirmationResult.confirm(otp);
       router.push("/success");
-    } else {
+    } catch (error) {
       router.push("/failed");
     }
   };
 
   return (
     <div className="card">
-      <h2>Verify OTP</h2>
+      <h2>Enter OTP</h2>
 
       <input
         placeholder="Enter OTP"
@@ -37,7 +26,7 @@ export default function OTPPage({ searchParams }) {
         onChange={(e) => setOtp(e.target.value)}
       />
 
-      <button onClick={verify} disabled={otp.length !== 6}>
+      <button onClick={verifyOTP} disabled={otp.length !== 6}>
         Verify OTP
       </button>
     </div>
