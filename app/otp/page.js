@@ -1,21 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-export default function OTPPage() {
+export default function OTPPage({ searchParams }) {
   const [otp, setOtp] = useState("");
   const router = useRouter();
-  const params = useSearchParams();
-  const phone = params.get("phone");
+
+  const phone = searchParams?.phone || "";
 
   const verify = async () => {
     const res = await fetch("/api/verify-otp", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ phone, otp })
+      body: JSON.stringify({ phone, otp }),
     });
 
     const data = await res.json();
@@ -42,4 +42,4 @@ export default function OTPPage() {
       </button>
     </div>
   );
-}
+          }
