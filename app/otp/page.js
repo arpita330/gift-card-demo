@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -11,6 +12,9 @@ export default function OTPPage() {
   const verify = async () => {
     const res = await fetch("/api/verify-otp", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({ phone, otp })
     });
 
@@ -34,8 +38,8 @@ export default function OTPPage() {
       />
 
       <button onClick={verify} disabled={otp.length !== 6}>
-        Verify
+        Verify OTP
       </button>
     </div>
   );
-      }
+}
