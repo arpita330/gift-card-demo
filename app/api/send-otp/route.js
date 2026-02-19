@@ -1,10 +1,20 @@
-import { generateOTP } from "@/lib/otpStore";
+import { generateOTP } from "../../../lib/otpStore";
 
 export async function POST(req) {
-  const { phone } = await req.json();
-  const otp = generateOTP(phone);
+  try {
+    const body = await req.json();
+    const { phone } = body;
 
-  console.log("Generated OTP:", otp); // Visible in Vercel logs
+    if (!phone) {
+      return Response.json({ success: false });
+    }
 
-  return Response.json({ success: true });
+    const otp = generateOTP(phone);
+
+    console.log("Generated OTP:", otp);
+
+    return Response.json({ success: true });
+  } catch (error) {
+    return Response.json({ success: false });
+  }
 }
